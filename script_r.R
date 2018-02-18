@@ -37,19 +37,19 @@ wave = temp[, sapply(.SD, function(x) list(mean = round(mean(x), 2))), .SDcols =
 names(wave) = c("code", "country", "wave", cols)
 wave = merge(wave, countryList, by="code")
 wave[, sum := rowSums(.SD, na.rm = TRUE), .SDcols = grep("F1", names(wave))] 
+# write.table(wave, file = "wave.csv", sep = ",", row.names=FALSE)
 
 year = temp[, sapply(.SD, function(x) list(mean = round(mean(x), 2))), .SDcols = cols, by=list(S003, S009, S020)]
 names(year) = c("code", "country", "year", cols)
 year = merge(year, countryList, by="code")
 year[, sum := rowSums(round(.SD, 2), na.rm = TRUE), .SDcols = grep("F1", names(year))] 
+# write.table(year, file = "year.csv", sep = ",", row.names=FALSE)
 
 # countryAvg = year[, sapply(.SD, function(x) list(mean = mean(x))), .SDcols = cols, by=list(code)]
 countryAvg = year[, sapply(.SD, function(x) list(mean = round(mean(x), 2))), .SDcols = c(cols, "sum"), by=list(code)]
-names(countryAvg) = c("code", cols, "sum")
+countryAvg[, avg:=round(sum.mean/length(cols), 2)]
+names(countryAvg) = c("code", cols, "sum", "avg")
 countryAvg = merge(countryAvg, countryList, by="code")
-
-write.table(wave, file = "wave.csv", sep = ",", row.names=FALSE)
-write.table(year, file = "year.csv", sep = ",", row.names=FALSE)
 write.table(countryAvg, file="countryAvg.csv", sep = ",", row.names=FALSE)
 
 # A025: 
