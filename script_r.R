@@ -13,6 +13,7 @@ questions = c("F115","F116", "F117", "F118", "F119", "F120", "F121", "F122", "F1
 "S002", "S003", "S009", "S020")
 
 countryList = data.table(read.csv("coutry.csv"))
+continent = data.table(read.csv("continent.csv"))
 # questions = c("F115","F116", "F117", "F118", "F119", "F120", "F121", "F122", "F123",
 # 	"E069_01", "E069_06", "E069_11", "E069_16", "E069_21", "E069_26", "E069_31", "E069_36", "E069_41", "E069_46", "E069_51", "E069_57", 
 # "E069_02", "E069_07", "E069_12", "E069_17", "E069_22", "E069_27", "E069_32", "E069_37", "E069_42", "E069_47", "E069_52", "E069_58", 
@@ -36,20 +37,22 @@ temp[, sapply(.SD, function(x) list(mean = mean(x))), .SDcols = cols, by = list(
 wave = temp[, sapply(.SD, function(x) list(mean = round(mean(x), 2))), .SDcols = cols, by=list(S003, S009, S002)]
 names(wave) = c("code", "country", "wave", cols)
 wave = merge(wave, countryList, by="code")
+wave = merge(wave, continent, by="c2")
 wave[, sum := rowSums(.SD, na.rm = TRUE), .SDcols = grep("F1", names(wave))] 
-# write.table(wave, file = "wave.csv", sep = ",", row.names=FALSE)
+write.table(wave, file = "wave.csv", sep = ",", row.names=FALSE)
 
 year = temp[, sapply(.SD, function(x) list(mean = round(mean(x), 2))), .SDcols = cols, by=list(S003, S009, S020)]
 names(year) = c("code", "country", "year", cols)
 year = merge(year, countryList, by="code")
+year = merge(year, continent, by="c2")
 year[, sum := rowSums(round(.SD, 2), na.rm = TRUE), .SDcols = grep("F1", names(year))] 
-# write.table(year, file = "year.csv", sep = ",", row.names=FALSE)
+write.table(year, file = "year.csv", sep = ",", row.names=FALSE)
 
-# countryAvg = year[, sapply(.SD, function(x) list(mean = mean(x))), .SDcols = cols, by=list(code)]
 countryAvg = year[, sapply(.SD, function(x) list(mean = round(mean(x), 2))), .SDcols = c(cols, "sum"), by=list(code)]
 countryAvg[, avg:=round(sum.mean/length(cols), 2)]
 names(countryAvg) = c("code", cols, "sum", "avg")
 countryAvg = merge(countryAvg, countryList, by="code")
+countryAvg = merge(countryAvg, continent, by="c2")
 write.table(countryAvg, file="countryAvg.csv", sep = ",", row.names=FALSE)
 
 # A025: 
