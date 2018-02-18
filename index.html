@@ -12,13 +12,14 @@
 </head>
 <body>
 <div class="text-center">
-	<div class="h1 p-5 bg-light">
+	<div class="h1 py-3 bg-light m-0">
 		World Values Survey - Justifiable
 	</div>
 </div>
 <div id="basic_choropleth" style="position: relative; width: 1400px; height: 800px;"></div>
 <div>
-	<table class="table table-hover p-5">
+	<div class="h1 py-2 bg-light text-center m-0">Variables</div>
+	<table class="table table-hover m-0">
 	  <thead>
 	  	<tr>
 	  		<th colspan="13" class="text-primary">
@@ -28,7 +29,7 @@
 	    <tr>
 	      <th scope="col">#</th>
 	      <th scope="col">Variable</th>
-	      <th scope="col">Explanation</th>
+	      <th scope="col">Question</th>
 	      <th scope="col", colspan="5">Never justifiable</th>
 	      <th class="text-right" scope="col", colspan="5">Always justifiable</th>
 	    </tr>
@@ -43,14 +44,18 @@
 	  </thead>
 	</table>
 </div>
-<div class="text-center p-5">
-	<div class="h2 p-2">
-	The sum of average justifiable values from 1981 to 2014 in 30 countries</div>
+<div class="h2 p-4 m-0 bg-light text-center">
+	The sum of average justifiable values from 1981 to 2014 in 30 countries
+</div>
+<div class="text-center px-3 mb-5">
 	<div>
-		<label><input type="checkbox"> Sort values</label>
+		<label><input type="checkbox"> sort</label>
 	</div>
 	<div id="iBar">
 	</div>
+</div>
+<div id="iBody" class="text-center">
+	  <div id="iChart"></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>

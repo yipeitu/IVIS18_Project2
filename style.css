@@ -18,3 +18,9 @@
 .x path, .x stroke {
   display: none;
 }
+
+#iChart {
+  position: relative;
+  top: 50px;
+  left: 100px;
+}	
