@@ -26,7 +26,7 @@ with open("wave.csv", "r") as csvfile:
 			countries.append(c3)
 		if data.get(continent) is None:
 			data[continent] = {}
-		if data.get(name) is None:
+		if data[continent].get(name) is None:
 			data[continent][name] = [[] for i in range(wave_num)]
 		for var in fields.keys():
 			data[continent][name][int(wave)-1].append({
