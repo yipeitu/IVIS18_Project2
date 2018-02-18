@@ -1,0 +1,57 @@
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
+	
+    
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<title>IV18 - Lab 2</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="text-center">
+	<div class="h1 p-5 bg-light">
+		World Values Survey - Justifiable
+	</div>
+</div>
+<div id="basic_choropleth" style="position: relative; width: 1400px; height: 800px;"></div>
+<div>
+	<table class="table table-hover p-5">
+	  <thead>
+	  	<tr>
+	  		<th colspan="13" class="text-primary">
+	  			Please tell me for each of the following actions whether you think it can always be justified, never be justified, or something in between, using this card. <span class="font-italic font-weight-light">(Read out and code one answer for each statement)</span>:
+	  		</th>
+	  	</tr>
+	    <tr>
+	      <th scope="col">#</th>
+	      <th scope="col">Variable</th>
+	      <th scope="col">Explanation</th>
+	      <th scope="col", colspan="5">Never justifiable</th>
+	      <th class="text-right" scope="col", colspan="5">Always justifiable</th>
+	    </tr>
+	  </thead>
+	  <tbody id="iVariables">
+	    
+	  </tbody>
+	  <thead>
+	  	<tr>
+	  		<th colspan=13 class="text-warning bg-dark text-center">Missing data is replaced with the middle value, 6.</th>
+	  	</tr>
+	  </thead>
+	</table>
+</div>
+<div id="iBar">
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datamaps/0.5.8/datamaps.world.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+.bar {
+      fill: steelblue;
+    }
+
+.bar:hover {
+  fill: brown;
+}
+
+.label {
+  fill: black;
+  font: 10px sans-serif;
+}
+
+.y path, .y stroke, .y line {
+  display: none;
+}
+
+.x path, .x stroke {
+  display: none;
+}
