@@ -415,309 +415,98 @@ var RadarChart = {
   }
 };
 
+var createRadar = function(d, country, continent){
+	var w = 250,
+	h = 250;
 
-var w = 500,
-	h = 500;
+	var colorscale = d3.scale.category10();
 
-var colorscale = d3.scale.category10();
+	//Legend titles
+	var LegendOptions = ['wave 1','wave 2', 'wave 3', 'wave 4', 'wave 5', 'wave 6'];
 
-//Legend titles
-var LegendOptions = ['wave 1','wave 2', 'wave 3', 'wave 4', 'wave 5', 'wave 6'];
+	//Data
 
-//Data
-var d = [
-    [
-      {
-        "value": 0,
-        "axis": "homosexuality"
-      },
-      {
-        "value": 0,
-        "axis": "prostitution"
-      },
-      {
-        "value": 0,
-        "axis": "suicide"
-      },
-      {
-        "value": 0,
-        "axis": "euthanasia"
-      },
-      {
-        "value": 0,
-        "axis": "divorce"
-      },
-      {
-        "value": 0,
-        "axis": "avoiding a fare on public transport"
-      },
-      {
-        "value": 0,
-        "axis": "tax cheating"
-      },
-      {
-        "value": 0,
-        "axis": "bribe accept"
-      },
-      {
-        "value": 0,
-        "axis": "abortion"
-      }
-    ],
-    [
-      {
-        "value": 0,
-        "axis": "homosexuality"
-      },
-      {
-        "value": 0,
-        "axis": "prostitution"
-      },
-      {
-        "value": 0,
-        "axis": "suicide"
-      },
-      {
-        "value": 0,
-        "axis": "euthanasia"
-      },
-      {
-        "value": 0,
-        "axis": "divorce"
-      },
-      {
-        "value": 0,
-        "axis": "avoiding a fare on public transport"
-      },
-      {
-        "value": 0,
-        "axis": "tax cheating"
-      },
-      {
-        "value": 0,
-        "axis": "bribe accept"
-      },
-      {
-        "value": 0,
-        "axis": "abortion"
-      }
-    ],
-    [
-      {
-        "value": 6.48,
-        "axis": "homosexuality"
-      },
-      {
-        "value": 3.65,
-        "axis": "prostitution"
-      },
-      {
-        "value": 4.13,
-        "axis": "suicide"
-      },
-      {
-        "value": 6.38,
-        "axis": "euthanasia"
-      },
-      {
-        "value": 7.35,
-        "axis": "divorce"
-      },
-      {
-        "value": 2.87,
-        "axis": "avoiding a fare on public transport"
-      },
-      {
-        "value": 2.55,
-        "axis": "tax cheating"
-      },
-      {
-        "value": 1.78,
-        "axis": "bribe accept"
-      },
-      {
-        "value": 6.94,
-        "axis": "abortion"
-      }
-    ],
-    [
-      {
-        "value": 0,
-        "axis": "homosexuality"
-      },
-      {
-        "value": 0,
-        "axis": "prostitution"
-      },
-      {
-        "value": 0,
-        "axis": "suicide"
-      },
-      {
-        "value": 0,
-        "axis": "euthanasia"
-      },
-      {
-        "value": 0,
-        "axis": "divorce"
-      },
-      {
-        "value": 0,
-        "axis": "avoiding a fare on public transport"
-      },
-      {
-        "value": 0,
-        "axis": "tax cheating"
-      },
-      {
-        "value": 0,
-        "axis": "bribe accept"
-      },
-      {
-        "value": 0,
-        "axis": "abortion"
-      }
-    ],
-    [
-      {
-        "value": 8.14,
-        "axis": "homosexuality"
-      },
-      {
-        "value": 2.94,
-        "axis": "prostitution"
-      },
-      {
-        "value": 4.08,
-        "axis": "suicide"
-      },
-      {
-        "value": 6.45,
-        "axis": "euthanasia"
-      },
-      {
-        "value": 8.27,
-        "axis": "divorce"
-      },
-      {
-        "value": 2.71,
-        "axis": "avoiding a fare on public transport"
-      },
-      {
-        "value": 2.26,
-        "axis": "tax cheating"
-      },
-      {
-        "value": 1.96,
-        "axis": "bribe accept"
-      },
-      {
-        "value": 7.7,
-        "axis": "abortion"
-      }
-    ],
-    [
-      {
-        "value": 7.99,
-        "axis": "homosexuality"
-      },
-      {
-        "value": 2.88,
-        "axis": "prostitution"
-      },
-      {
-        "value": 4.2,
-        "axis": "suicide"
-      },
-      {
-        "value": 5.44,
-        "axis": "euthanasia"
-      },
-      {
-        "value": 8.09,
-        "axis": "divorce"
-      },
-      {
-        "value": 2.69,
-        "axis": "avoiding a fare on public transport"
-      },
-      {
-        "value": 2.0,
-        "axis": "tax cheating"
-      },
-      {
-        "value": 1.78,
-        "axis": "bribe accept"
-      },
-      {
-        "value": 7.61,
-        "axis": "abortion"
-      }
-    ]
-  ];
+	//Options for the Radar chart, other than default
+	var mycfg = {
+	  w: w,
+	  h: h,
+	  maxValue: 0.6,
+	  levels: 6,
+	  ExtraWidthX: 150
+	}
 
-//Options for the Radar chart, other than default
-var mycfg = {
-  w: w,
-  h: h,
-  maxValue: 0.6,
-  levels: 6,
-  ExtraWidthX: 300
+	//Call function to draw the Radar chart
+	//Will expect that data is in %'s
+	RadarChart.draw("#"+country, d, mycfg);
+
+	////////////////////////////////////////////
+	/////////// Initiate legend ////////////////
+	////////////////////////////////////////////
+
+	var svgRadar = d3.select('#i'+continent)
+		.selectAll('svg')
+		.append('svg')
+		.attr("width", w)
+		.attr("height", h)
+
+	//Create the title for the legend
+	var text = svgRadar.append("text")
+		.attr("class", "title")
+		.attr('transform', 'translate(90,0)') 
+		.attr("x", w - 70)
+		.attr("y", 10)
+		.attr("font-size", "12px")
+		.attr("fill", "#404040")
+		.text("The wave number");
+			
+	//Initiate Legend	
+	// var legend = svgRadar.append("g")
+	// 	.attr("class", "legend")
+	// 	.attr("height", 100)
+	// 	.attr("width", 200)
+	// 	.attr('transform', 'translate(90,20)') 
+	// 	;
+	// 	//Create colour squares
+	// 	legend.selectAll('rect')
+	// 	  .data(LegendOptions)
+	// 	  .enter()
+	// 	  .append("rect")
+	// 	  .attr("x", w - 65)
+	// 	  .attr("y", function(d, i){ return i * 20;})
+	// 	  .attr("width", 10)
+	// 	  .attr("height", 10)
+	// 	  .style("fill", function(d, i){ return colorscale(i);})
+	// 	  ;
+	// 	//Create text next to squares
+	// 	legend.selectAll('text')
+	// 	  .data(LegendOptions)
+	// 	  .enter()
+	// 	  .append("text")
+	// 	  .attr("x", w - 52)
+	// 	  .attr("y", function(d, i){ return i * 20 + 9;})
+	// 	  .attr("font-size", "11px")
+	// 	  .attr("fill", "#737373")
+	// 	  .text(function(d) { return d; })
+	// 	  ;	
 }
 
-//Call function to draw the Radar chart
-//Will expect that data is in %'s
-RadarChart.draw("#iChart", d, mycfg);
+d3.json("https://yipeitu.github.io/IVIS18_Project2/wave.json", function(data) {
+  // create html
+  Object.keys(data).forEach(function(continent) {
+  	Object.keys(data[continent]).forEach(function(country){
+  		console.log(continent, country)
+  		$("#i"+continent).append(`<div id=${country}></div>`)
+  		createRadar(data[continent][country], country, continent)
+  		// createRadar(data[continent][country], country, continent)
+  	})
+  })
+  
+});
 
-////////////////////////////////////////////
-/////////// Initiate legend ////////////////
-////////////////////////////////////////////
 
-var svgRadar = d3.select('#iBody')
-	.selectAll('svg')
-	.append('svg')
-	.attr("width", w+300)
-	.attr("height", h)
 
-//Create the title for the legend
-var text = svgRadar.append("text")
-	.attr("class", "title")
-	.attr('transform', 'translate(90,0)') 
-	.attr("x", w - 70)
-	.attr("y", 10)
-	.attr("font-size", "12px")
-	.attr("fill", "#404040")
-	.text("The wave number");
-		
-//Initiate Legend	
-var legend = svgRadar.append("g")
-	.attr("class", "legend")
-	.attr("height", 100)
-	.attr("width", 200)
-	.attr('transform', 'translate(90,20)') 
-	;
-	//Create colour squares
-	legend.selectAll('rect')
-	  .data(LegendOptions)
-	  .enter()
-	  .append("rect")
-	  .attr("x", w - 65)
-	  .attr("y", function(d, i){ return i * 20;})
-	  .attr("width", 10)
-	  .attr("height", 10)
-	  .style("fill", function(d, i){ return colorscale(i);})
-	  ;
-	//Create text next to squares
-	legend.selectAll('text')
-	  .data(LegendOptions)
-	  .enter()
-	  .append("text")
-	  .attr("x", w - 52)
-	  .attr("y", function(d, i){ return i * 20 + 9;})
-	  .attr("font-size", "11px")
-	  .attr("fill", "#737373")
-	  .text(function(d) { return d; })
-	  ;	
+
+
 
 // ===========
 // var margin = {top: 20, right: 20, bottom: 30, left: 40},
