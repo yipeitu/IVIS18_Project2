@@ -1,5 +1,5 @@
 library(data.table)
-setwd("/Users/yipeitu/Desktop/DH2321 Visualization/Project 2")
+setwd("/Users/yipeitu/Desktop/DH2321 Visualization/Project 2/IVIS18_Project2/")
 # load("/Users/yipeitu/Desktop/DH2321 Visualization/Project 2/WVS_Longitudinal_1981_2014_R_v2015_04_18.rdata")
 
 # d = WVS_Longitudinal_1981_2014_R_v2015_04_18
@@ -7,7 +7,7 @@ country = c("AU", "BD", "BR", "CA", "CH", "CN",
 			"CO", "CY", "DE", "ES", "FI", "FR",
 			"GB-GBN", "HK", "ID", "IL", "IN",
 			"IR", "IT", "JP", "KR", "LB", "MX", 
-			"MY", "NG", "NL", "NO", "NZ", "PH",
+			# "MY", "NG", "NL", "NO", "NZ", "PH",
 			"RU", "SE", "SG", "TH", "TW", "US", "VE") 
 questions = c("F115","F116", "F117", "F118", "F119", "F120", "F121", "F122", "F123",
 "S002", "S003", "S009", "S020")
@@ -33,16 +33,24 @@ for(col in cols) set(temp, i=which(temp[[col]]==-4), j=col, value=6)
 temp[, sapply(.SD, function(x) list(mean = mean(x))), .SDcols = cols, by = list(S003, S009, S002)]
 
 
-wave = temp[, sapply(.SD, function(x) list(mean = mean(x))), .SDcols = cols, by=list(S003, S009, S002)]
+wave = temp[, sapply(.SD, function(x) list(mean = round(mean(x), 2))), .SDcols = cols, by=list(S003, S009, S002)]
 names(wave) = c("code", "country", "wave", cols)
 wave = merge(wave, countryList, by="code")
+wave[, sum := rowSums(.SD, na.rm = TRUE), .SDcols = grep("F1", names(wave))] 
 
-year = temp[, sapply(.SD, function(x) list(mean = mean(x))), .SDcols = cols, by=list(S003, S009, S020)]
+year = temp[, sapply(.SD, function(x) list(mean = round(mean(x), 2))), .SDcols = cols, by=list(S003, S009, S020)]
 names(year) = c("code", "country", "year", cols)
 year = merge(year, countryList, by="code")
+year[, sum := rowSums(round(.SD, 2), na.rm = TRUE), .SDcols = grep("F1", names(year))] 
+
+# countryAvg = year[, sapply(.SD, function(x) list(mean = mean(x))), .SDcols = cols, by=list(code)]
+countryAvg = year[, sapply(.SD, function(x) list(mean = round(mean(x), 2))), .SDcols = c(cols, "sum"), by=list(code)]
+names(countryAvg) = c("code", cols, "sum")
+countryAvg = merge(countryAvg, countryList, by="code")
 
 write.table(wave, file = "wave.csv", sep = ",", row.names=FALSE)
 write.table(year, file = "year.csv", sep = ",", row.names=FALSE)
+write.table(countryAvg, file="countryAvg.csv", sep = ",", row.names=FALSE)
 
 # A025: 
 # F115:	Justifiable: avoiding a fare on public transport 
