@@ -432,7 +432,7 @@ var createRadar = function(d, country, continent){
 	  h: h,
 	  maxValue: 0.6,
 	  levels: 6,
-	  ExtraWidthX: 150
+	  ExtraWidthX: 200
 	}
 
 	//Call function to draw the Radar chart
@@ -494,9 +494,10 @@ d3.json("https://yipeitu.github.io/IVIS18_Project2/wave.json", function(data) {
   // create html
   Object.keys(data).forEach(function(continent) {
   	Object.keys(data[continent]).forEach(function(country){
-  		console.log(continent, country)
-  		$("#i"+continent).append(`<div id=${country}></div>`)
-  		createRadar(data[continent][country], country, continent)
+  		console.log(continent, country, data[continent][country])
+  		countryId = country.replace(" ", "")
+  		$("#i"+continent).append(`<div id=${countryId}></div>`)
+  		createRadar(data[continent][country], countryId, continent)
   		// createRadar(data[continent][country], country, continent)
   	})
   })

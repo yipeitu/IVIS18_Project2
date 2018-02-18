@@ -20,7 +20,7 @@ with open("wave.csv", "r") as csvfile:
 	for line in d:
 		continent = line[cols.index("continent")]
 		wave = line[cols.index("wave")]
-		name = line[cols.index("name")][1:]
+		name = line[cols.index("name")]
 		c3 = line[cols.index("c3")]
 		if c3 not in countries:
 			countries.append(c3)
