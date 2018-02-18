@@ -13,7 +13,7 @@ fields = { "F115": "avoiding a fare on public transport",
 "F123": "suicide"}
 
 data = {}
-country = []
+countries = []
 with open("wave.csv", "r") as csvfile:
 	d = csv.reader(csvfile)
 	cols = d.next()
@@ -21,8 +21,8 @@ with open("wave.csv", "r") as csvfile:
 		wave = line[cols.index("wave")]
 		name = line[cols.index("name")]
 		c3 = line[cols.index("c3")]
-		if c3 not in country:
-			country.append(c3)
+		if c3 not in countries:
+			countries.append(c3)
 		if data.get(name) is None:
 			data[name] = [[] for i in range(wave_num)]
 		for var in fields.keys():
@@ -30,5 +30,16 @@ with open("wave.csv", "r") as csvfile:
 				"axis": fields[var],
 				"value": float(line[cols.index(var)])
 				})
+
+for country in data:
+	for wave in data[country]:
+		if len(wave) != 0:
+			continue
+		for var in fields.keys():
+			wave.append({
+				"axis": fields[var],
+				"value": 0
+				})
+
 with open("wave.json", "w") as wfile:
 	json.dump(data, wfile)

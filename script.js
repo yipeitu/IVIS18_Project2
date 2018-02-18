@@ -1,4 +1,4 @@
-var countries = ["AUS", "BGD", "BRA", "CAN", "CHN", "TWN", "COL", "CYP", "FIN", "FRA", "DEU", "HKG", "IND", "IDN", "IRN", "ISR", "ITA", "JPN", "KOR", "LBN", "MYS", "MEX", "NLD", "NZL", "NGA", "NOR", "PHL", "RUS", "SGP", "ESP", "SWE", "CHE", "THA", "GBR", "USA", "VEN"]
+var countries = ["AUS", "BGD", "BRA", "CAN", "CHN", "TWN", "COL", "CYP", "FIN", "FRA", "DEU", "HKG", "IND", "IDN", "IRN", "ISR", "ITA", "JPN", "KOR", "LBN", "RUS", "SGP", "ESP", "SWE", "CHE", "THA", "GBR", "USA", "VEN"]
 
 var basic_choropleth = new Datamap({
   element: document.getElementById("basic_choropleth"),
@@ -415,6 +415,7 @@ var RadarChart = {
   }
 };
 
+
 var w = 500,
 	h = 500;
 
@@ -427,229 +428,229 @@ var LegendOptions = ['wave 1','wave 2', 'wave 3', 'wave 4', 'wave 5', 'wave 6'];
 var d = [
     [
       {
-        "value": 1.84,
+        "value": 0,
         "axis": "homosexuality"
       },
       {
-        "value": 1.82,
+        "value": 0,
         "axis": "prostitution"
       },
       {
-        "value": 2.89,
+        "value": 0,
         "axis": "suicide"
       },
       {
-        "value": 4.24,
+        "value": 0,
         "axis": "euthanasia"
       },
       {
-        "value": 3.75,
+        "value": 0,
         "axis": "divorce"
       },
       {
-        "value": 1.94,
+        "value": 0,
         "axis": "avoiding a fare on public transport"
       },
       {
-        "value": 1.36,
+        "value": 0,
         "axis": "tax cheating"
       },
       {
-        "value": 1.91,
+        "value": 0,
         "axis": "bribe accept"
       },
       {
-        "value": 3.8,
+        "value": 0,
         "axis": "abortion"
       }
     ],
     [
       {
-        "value": 1.54,
+        "value": 0,
         "axis": "homosexuality"
       },
       {
-        "value": 2.16,
+        "value": 0,
         "axis": "prostitution"
       },
       {
-        "value": 2.84,
+        "value": 0,
         "axis": "suicide"
       },
       {
-        "value": 6.0,
+        "value": 0,
         "axis": "euthanasia"
       },
       {
-        "value": 4.25,
+        "value": 0,
         "axis": "divorce"
       },
       {
-        "value": 2.75,
+        "value": 0,
         "axis": "avoiding a fare on public transport"
       },
       {
-        "value": 1.53,
+        "value": 0,
         "axis": "tax cheating"
       },
       {
-        "value": 1.8,
+        "value": 0,
         "axis": "bribe accept"
       },
       {
-        "value": 4.21,
+        "value": 0,
         "axis": "abortion"
       }
     ],
     [
       {
-        "value": 2.13,
+        "value": 6.48,
         "axis": "homosexuality"
       },
       {
-        "value": 2.28,
+        "value": 3.65,
         "axis": "prostitution"
       },
       {
-        "value": 2.82,
+        "value": 4.13,
         "axis": "suicide"
       },
       {
-        "value": 4.25,
+        "value": 6.38,
         "axis": "euthanasia"
       },
       {
-        "value": 4.12,
+        "value": 7.35,
         "axis": "divorce"
       },
       {
-        "value": 2.63,
+        "value": 2.87,
         "axis": "avoiding a fare on public transport"
+      },
+      {
+        "value": 2.55,
+        "axis": "tax cheating"
       },
       {
         "value": 1.78,
-        "axis": "tax cheating"
-      },
-      {
-        "value": 1.5,
         "axis": "bribe accept"
       },
       {
-        "value": 3.35,
+        "value": 6.94,
         "axis": "abortion"
       }
     ],
     [
       {
-        "value": 2.77,
+        "value": 0,
         "axis": "homosexuality"
       },
       {
-        "value": 2.2,
+        "value": 0,
         "axis": "prostitution"
       },
       {
-        "value": 2.77,
+        "value": 0,
         "axis": "suicide"
       },
       {
-        "value": 4.56,
+        "value": 0,
         "axis": "euthanasia"
       },
       {
-        "value": 4.57,
+        "value": 0,
         "axis": "divorce"
       },
       {
-        "value": 2.74,
+        "value": 0,
         "axis": "avoiding a fare on public transport"
       },
       {
-        "value": 1.59,
+        "value": 0,
         "axis": "tax cheating"
       },
       {
-        "value": 1.42,
+        "value": 0,
         "axis": "bribe accept"
       },
       {
-        "value": 3.37,
+        "value": 0,
         "axis": "abortion"
       }
     ],
     [
       {
-        "value": 2.92,
+        "value": 8.14,
         "axis": "homosexuality"
       },
       {
-        "value": 2.54,
+        "value": 2.94,
         "axis": "prostitution"
       },
       {
-        "value": 2.93,
+        "value": 4.08,
         "axis": "suicide"
       },
       {
-        "value": 4.81,
+        "value": 6.45,
         "axis": "euthanasia"
       },
       {
-        "value": 4.76,
+        "value": 8.27,
         "axis": "divorce"
       },
       {
-        "value": 2.78,
+        "value": 2.71,
         "axis": "avoiding a fare on public transport"
       },
       {
-        "value": 1.66,
+        "value": 2.26,
         "axis": "tax cheating"
       },
       {
-        "value": 1.59,
+        "value": 1.96,
         "axis": "bribe accept"
       },
       {
-        "value": 3.58,
+        "value": 7.7,
         "axis": "abortion"
       }
     ],
     [
       {
-        "value": 3.48,
+        "value": 7.99,
         "axis": "homosexuality"
       },
       {
-        "value": 6.0,
+        "value": 2.88,
         "axis": "prostitution"
       },
       {
-        "value": 2.48,
+        "value": 4.2,
         "axis": "suicide"
       },
       {
-        "value": 6.0,
+        "value": 5.44,
         "axis": "euthanasia"
       },
       {
-        "value": 4.75,
+        "value": 8.09,
         "axis": "divorce"
       },
       {
-        "value": 2.8,
+        "value": 2.69,
         "axis": "avoiding a fare on public transport"
       },
       {
-        "value": 1.74,
+        "value": 2.0,
         "axis": "tax cheating"
       },
       {
-        "value": 1.64,
+        "value": 1.78,
         "axis": "bribe accept"
       },
       {
-        "value": 3.49,
+        "value": 7.61,
         "axis": "abortion"
       }
     ]
