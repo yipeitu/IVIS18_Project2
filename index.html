@@ -69,21 +69,47 @@
 	<table class="table m-0 text-center">
 	  <thead>
 	  	<tr>
-	  		<th colspan=3 class="text-warning bg-dark text-center">Missing wave is not shown in the graph</th>
+	  		<th colspan=6 class="text-warning bg-dark text-center">Missing wave is not shown in the graph</th>
 	  	</tr>
+	  	<tr>
+	    	<th>
+	    		<label class="rounded p-2 text-light" style="background-color:#ff7f0e">
+	    			<input type="checkbox" id="iWave1" checked="true"> wave 1</label>
+	    	</th>
+	    	<th>
+	    		<label class="rounded p-2 text-light" style="background-color:#1f77b4">
+	    			<input type="checkbox" id="iWave2"> wave 2</label>
+	    	</th>
+	    	<th>
+	    		<label class="rounded p-2 text-light" style="background-color:#2ca02c">
+	    			<input type="checkbox" id="iWave3"> wave 3</label>
+	    	</th>
+	    	<th>
+	    		<label class="rounded p-2 text-light" style="background-color:#d62728">
+	    			<input type="checkbox" id="iWave4"> wave 4</label>
+	    	</th>
+	    	<th>
+	    		<label class="rounded p-2 text-light" style="background-color:#9467bd">
+	    			<input type="checkbox" id="iWave5"> wave 5</label>
+	    	</th>
+	    	<th>
+	    		<label class="rounded p-2 text-light" style="background-color:#8c564b">
+	    			<input type="checkbox" id="iWave6"> wave 6</label>
+	    	</th>
+	    </tr>
 	    <tr>
-	      <th scope="col">America</th>
-	      <th scope="col">Asia</th>
-	      <th scope="col">Europe</th>
+	      <th scope="col" colspan=2>America</th>
+	      <th scope="col" colspan=2>Asia</th>
+	      <th scope="col" colspan=2>Europe</th>
 	    </tr>
 	  </thead>
 	  <div id="iBody" class="text-center">
 	    <tr>
-	    	<th id="iAMERICA">
+	    	<th scope="col" colspan=2 id="iAMERICA">
 	    	</th>
-	    	<th id="iASIA">
+	    	<th scope="col" colspan=2 id="iASIA">
 	    	</th>
-	    	<th id="iEUROPE">
+	    	<th scope="col" colspan=2 id="iEUROPE">
 	    	</th>
 	    </tr>
 	  </div>

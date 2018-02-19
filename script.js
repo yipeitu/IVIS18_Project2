@@ -26,7 +26,7 @@ var countries = {
 	'JPN': ['JP', 'JAPAN', 'ASIA', '19.9'], 
 	'ITA': ['IT', 'ITALY', 'EUROPE', '24.12'], 
 	'IND': ['IN', 'INDIA', 'ASIA', '17.5'], 
-	'RUS': ['RU', 'RUSSIAN FEDERATION', 'EUROPE', '23.12'], 
+	'RUS': ['RU', 'RUSSIA', 'EUROPE', '23.12'], 
 	'MEX': ['MX', 'MEXICO', 'AMERICA', '25.99'], 
 	'BRA': ['BR', 'BRAZIL', 'AMERICA', '22.69']}
 var countrySelected = []
@@ -36,8 +36,13 @@ d3.json("https://yipeitu.github.io/IVIS18_Project2/wave.json", function(data) {
   // create html
   Object.keys(data).forEach(function(continent) {
   	Object.keys(data[continent]).forEach(function(country){
-  		countryId = country.replace("(", "").replace(")", "").replace(" ", "")
-  		$("#i"+continent).append(`<div id=${countryId}></div>`)
+  		$("#i"+continent).append(`<div id=${country}></div>`)
+  		if(["CAN", "TWN", "SWE"].indexOf(country) != -1){
+  			countrySelected.push(country);
+  			$("#"+country).addClass('bound');
+  			console.log(continent, country, data[continent][country])
+  			createRadar(data[continent][country], country, continent)
+  		}
   	})
   })
   dataRadar = data;
@@ -45,13 +50,23 @@ d3.json("https://yipeitu.github.io/IVIS18_Project2/wave.json", function(data) {
 
 var updateRadar = function(){
 	console.log(countrySelected);
-	countrySelected.forEach(function(country){
-		if(Object.keys(countries).indexOf(country) === -1)
-			return;
+	Object.keys(countries).forEach(function(country){
+		// if(Object.keys(countries).indexOf(country) === -1)
+		// 	return;
+		console.log(country)
 		var continent = countries[country][2]
-		var name = countries[country][1]
-		var countryId = name.replace("(", "").replace(")", "").replace(" ", "")
-		createRadar(dataRadar[continent][name], countryId, continent)
+		if(countrySelected.indexOf(country) != -1){
+			if($("body").find('#'+country+":not(.bound)").length != 0){
+				console.log(country, "draw")
+				$("#"+country).addClass('bound');
+				createRadar(dataRadar[continent][country], country, continent);
+			}
+			console.log(country, "show");
+			$("#"+country).removeAttr("hidden");
+		} else {
+			// console.log(country, "hide")
+			$("#"+country).attr("hidden", "true")
+		}
 	})
 }
 
@@ -79,9 +94,9 @@ var basic_choropleth = new Datamap({
     AUS: { fillKey: "authorHasTraveledTo" },
 	BGD: { fillKey: "authorHasTraveledTo" },
 	BRA: { fillKey: "authorHasTraveledTo" },
-	CAN: { fillKey: "authorHasTraveledTo" },
+	CAN: { fillKey: "authorHasClicked" },
 	CHN: { fillKey: "authorHasTraveledTo" },
-	TWN: { fillKey: "authorHasTraveledTo" },
+	TWN: { fillKey: "authorHasClicked" },
 	COL: { fillKey: "authorHasTraveledTo" },
 	CYP: { fillKey: "authorHasTraveledTo" },
 	FIN: { fillKey: "authorHasTraveledTo" },
@@ -99,7 +114,7 @@ var basic_choropleth = new Datamap({
 	RUS: { fillKey: "authorHasTraveledTo" },
 	SGP: { fillKey: "authorHasTraveledTo" },
 	ESP: { fillKey: "authorHasTraveledTo" },
-	SWE: { fillKey: "authorHasTraveledTo" },
+	SWE: { fillKey: "authorHasClicked" },
 	CHE: { fillKey: "authorHasTraveledTo" },
 	THA: { fillKey: "authorHasTraveledTo" },
 	GBR: { fillKey: "authorHasTraveledTo" },
@@ -107,20 +122,7 @@ var basic_choropleth = new Datamap({
 	VEN: { fillKey: "authorHasTraveledTo" }
   },
   done: function(datamap) {
-  	// $("#iBtnUnselected").on('')
     datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography){
-    	// var c3 = geography.id;
-     //    var fillkey_obj = datamap.options.data[c3] || {fillKey: 'defaultFill'};
-     //    var fillkey = fillkey_obj.fillKey;;
-     //    var fillkeys = Object.keys(fills);
-     //    var antikey = fillkeys[Math.abs(fillkeys.indexOf(fillkey) - 1)];
-     //    var new_fills = {
-     //      [geography.id] : {
-     //        fillKey: antikey
-     //      }
-     //    };
-     //    datamap.updateChoropleth(new_fills);
-
     	var c3 = geography.id;
 		if(countrySelected.indexOf(c3) === -1){
 			countrySelected.push(c3);
@@ -149,7 +151,8 @@ d3.select("#iSelect").on("change", function(){
 	if(this.checked){
 		Object.keys(countries).forEach(function(c){  
 			temp[c] = { "fillKey": "authorHasClicked" };
-			countrySelected.push(c)
+			countrySelected.push(c);
+			// updateRadar();
 		})
 	} else {
 		Object.keys(countries).forEach(function(c){  
@@ -349,7 +352,12 @@ var RadarChart = {
 	var radius = cfg.factor*Math.min(cfg.w/2, cfg.h/2);
 	var Format = d3.format('%');
 	d3.select(id).select("svg").remove();
-	
+	console.log(id)
+	d3.select(id)
+		.append("div")
+		.attr("class", "bg-dark text-light py-1")
+		.text(countries[id.replace("#", "")][1])
+
 	var g = d3.select(id)
 			.append("svg")
 			.attr("width", cfg.w+cfg.ExtraWidthX)
@@ -561,46 +569,47 @@ var createRadar = function(d, country, continent){
 		.append('svg')
 		.attr("width", w)
 		.attr("height", h)
+		.attr("class", "text-center")
 
 	//Create the title for the legend
-	var text = svgRadar.append("text")
-		.attr("class", "title")
-		.attr('transform', 'translate(90,0)') 
-		.attr("x", w - 70)
-		.attr("y", 10)
-		.attr("font-size", "12px")
-		.attr("fill", "#404040")
-		.text("The wave number");
+	// var text = svgRadar.append("text")
+	// 	.attr("class", "title")
+	// 	.attr('transform', 'translate(90,0)') 
+	// 	.attr("x", w - 70)
+	// 	.attr("y", 10)
+	// 	.attr("font-size", "12px")
+	// 	.attr("fill", "#404040")
+	// 	.text("The wave number");
 			
-	//Initiate Legend	
-	var legend = svgRadar.append("g")
-		.attr("class", "legend")
-		.attr("height", 100)
-		.attr("width", 200)
-		.attr('transform', 'translate(90,20)') 
-		;
-		//Create colour squares
-		legend.selectAll('rect')
-		  .data(LegendOptions)
-		  .enter()
-		  .append("rect")
-		  .attr("x", w - 65)
-		  .attr("y", function(d, i){ return i * 20;})
-		  .attr("width", 10)
-		  .attr("height", 10)
-		  .style("fill", function(d, i){ return colorscale(i);})
-		  ;
-		//Create text next to squares
-		legend.selectAll('text')
-		  .data(LegendOptions)
-		  .enter()
-		  .append("text")
-		  .attr("x", w - 52)
-		  .attr("y", function(d, i){ return i * 20 + 9;})
-		  .attr("font-size", "11px")
-		  .attr("fill", "#737373")
-		  .text(function(d) { return d; })
-		  ;	
+	// //Initiate Legend	
+	// var legend = svgRadar.append("g")
+	// 	.attr("class", "legend")
+	// 	.attr("height", 100)
+	// 	.attr("width", 200)
+	// 	.attr('transform', 'translate(90,20)') 
+	// 	;
+	// 	//Create colour squares
+	// 	legend.selectAll('rect')
+	// 	  .data(LegendOptions)
+	// 	  .enter()
+	// 	  .append("rect")
+	// 	  .attr("x", w - 65)
+	// 	  .attr("y", function(d, i){ return i * 20;})
+	// 	  .attr("width", 10)
+	// 	  .attr("height", 10)
+	// 	  .style("fill", function(d, i){ return colorscale(i);})
+	// 	  ;
+	// 	//Create text next to squares
+	// 	legend.selectAll('text')
+	// 	  .data(LegendOptions)
+	// 	  .enter()
+	// 	  .append("text")
+	// 	  .attr("x", w - 52)
+	// 	  .attr("y", function(d, i){ return i * 20 + 9;})
+	// 	  .attr("font-size", "11px")
+	// 	  .attr("fill", "#737373")
+	// 	  .text(function(d) { return d; })
+	// 	  ;	
 }
 
 
