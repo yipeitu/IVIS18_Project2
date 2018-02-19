@@ -12,8 +12,16 @@
 </head>
 <body>
 <div class="text-center">
-	<div class="h1 py-3 bg-light m-0">
-		World Values Survey - Justifiable
+	<div class="py-3 bg-light m-0">
+		<div class="h1">
+			World Values Survey - Justifiable
+		</div>
+		<div class="p-2">
+			30 countries are all selected with green, <span class="font-weight-bold">CLICK the country/countries</span> to show the data below.
+		</div>
+		<div class="bg-dark text-warning p-2">
+			<label><input type="checkbox" id="iSelect"> select all</label>
+		</div>
 	</div>
 </div>
 <div id="basic_choropleth" style="position: relative; width: 1400px; height: 800px;"></div>
@@ -49,7 +57,7 @@
 </div>
 <div class="text-center px-3 mb-5">
 	<div>
-		<label><input type="checkbox"> sort</label>
+		<label><input type="checkbox" id="iSort"> sort</label>
 	</div>
 	<div id="iBar">
 	</div>

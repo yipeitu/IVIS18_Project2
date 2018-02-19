@@ -13,7 +13,7 @@ fields = { "F115": "avoiding a fare on public transport",
 "F123": "suicide"}
 
 data = {}
-countries = []
+countries = {}
 with open("wave.csv", "r") as csvfile:
 	d = csv.reader(csvfile)
 	cols = d.next()
@@ -23,7 +23,7 @@ with open("wave.csv", "r") as csvfile:
 		name = line[cols.index("name")]
 		c3 = line[cols.index("c3")]
 		if c3 not in countries:
-			countries.append(c3)
+			countries[c3] = [line[cols.index("c2")], name, line[cols.index("continent")], line[cols.index("sum")]]
 		if data.get(continent) is None:
 			data[continent] = {}
 		if data[continent].get(name) is None:
@@ -34,6 +34,7 @@ with open("wave.csv", "r") as csvfile:
 				"value": float(line[cols.index(var)])
 				})
 
+print countries
 for continent in data:
 	for country in data[continent]:
 		for wave in data[continent][country]:

@@ -1,11 +1,79 @@
-var countries = ["AUS", "BGD", "BRA", "CAN", "CHN", "TWN", "COL", "CYP", "FIN", "FRA", "DEU", "HKG", "IND", "IDN", "IRN", "ISR", "ITA", "JPN", "KOR", "LBN", "RUS", "SGP", "ESP", "SWE", "CHE", "THA", "GBR", "USA", "VEN"]
+var countries = {
+	'BGD': ['BD', 'BANGLADESH', 'ASIA', '25.02'], 
+	'USA': ['US', 'UNITED STATES', 'AMERICA', '25.51'], 
+	'ISR': ['IL', 'ISRAEL', 'ASIA', '44.78'], 
+	'SWE': ['SE', 'SWEDEN', 'EUROPE', '42.13'], 
+	'DEU': ['DE', 'GERMANY', 'EUROPE', '42.15'], 
+	'IDN': ['ID', 'INDONESIA', 'ASIA', '12.91'], 
+	'GBR': ['GB', 'UNITED KINGDOM', 'EUROPE', '50.6'], 
+	'CAN': ['CA', 'CANADA', 'AMERICA', '32.61'], 
+	'KOR': ['KR', 'KOREA', 'ASIA', '23.55'], 
+	'COL': ['CO', 'COLOMBIA', 'AMERICA', '31.16'], 
+	'CYP': ['CY', 'CYPRUS', 'ASIA', '27.91'], 
+	'SGP': ['SG', 'SINGAPORE', 'ASIA', '22.3'], 
+	'HKG': ['HK', 'HONG KONG', 'ASIA', '27.85'], 
+	'LBN': ['LB', 'LEBANON', 'ASIA', '31.11'], 
+	'FRA': ['FR', 'FRANCE', 'EUROPE', '41.11'], 
+	'CHE': ['CH', 'SWITZERLAND', 'EUROPE', '27.54'], 
+	'ESP': ['ES', 'SPAIN', 'EUROPE', '28.59'], 
+	'TWN': ['TW', 'TAIWAN', 'ASIA', '22.97'], 
+	'CHN': ['CN', 'CHINA', 'ASIA', '24.87'], 
+	'AUS': ['AU', 'AUSTRALIA', 'ASIA', '30.77'], 
+	'IRN': ['IR', 'IRAN', 'ASIA', '13.95'], 
+	'VEN': ['VE', 'VENEZUELA', 'AMERICA', '21.16'], 
+	'FIN': ['FI', 'FINLAND', 'EUROPE', '29.43'], 
+	'THA': ['TH', 'THAILAND', 'ASIA', '26.28'], 
+	'JPN': ['JP', 'JAPAN', 'ASIA', '19.9'], 
+	'ITA': ['IT', 'ITALY', 'EUROPE', '24.12'], 
+	'IND': ['IN', 'INDIA', 'ASIA', '17.5'], 
+	'RUS': ['RU', 'RUSSIAN FEDERATION', 'EUROPE', '23.12'], 
+	'MEX': ['MX', 'MEXICO', 'AMERICA', '25.99'], 
+	'BRA': ['BR', 'BRAZIL', 'AMERICA', '22.69']}
+var countrySelected = []
+var dataAvg = null;
+var dataRadar = null;
+d3.json("https://yipeitu.github.io/IVIS18_Project2/wave.json", function(data) {
+  // create html
+  Object.keys(data).forEach(function(continent) {
+  	Object.keys(data[continent]).forEach(function(country){
+  		countryId = country.replace("(", "").replace(")", "").replace(" ", "")
+  		$("#i"+continent).append(`<div id=${countryId}></div>`)
+  	})
+  })
+  dataRadar = data;
+});
+
+var updateRadar = function(){
+	console.log(countrySelected);
+	countrySelected.forEach(function(country){
+		if(Object.keys(countries).indexOf(country) === -1)
+			return;
+		var continent = countries[country][2]
+		var name = countries[country][1]
+		var countryId = name.replace("(", "").replace(")", "").replace(" ", "")
+		createRadar(dataRadar[continent][name], countryId, continent)
+	})
+}
 
 var basic_choropleth = new Datamap({
   element: document.getElementById("basic_choropleth"),
   projection: 'mercator',
   fills: {
     defaultFill: "#BDC3C7",
-    authorHasTraveledTo: "#DAF7A6"
+    authorHasTraveledTo: "#DAF7A6",
+    authorHasClicked: "#FF5733"
+  },
+  geographyConfig: {
+    highlightOnHover: false,
+    // popupOnHover: true,
+    popupTemplate: function (geo, data) {
+            if ( !data ) return;
+            return ['<div class="hoverinfo text-light bg-dark rounded px-1"><strong>',
+                geo.properties.name,
+                '</strong>: <span class="text-warning">',
+                countries[geo.id][3],
+                '</span></div>'].join('');
+        }
   },
   data: {
     AUS: { fillKey: "authorHasTraveledTo" },
@@ -28,13 +96,6 @@ var basic_choropleth = new Datamap({
 	JPN: { fillKey: "authorHasTraveledTo" },
 	KOR: { fillKey: "authorHasTraveledTo" },
 	LBN: { fillKey: "authorHasTraveledTo" },
-	// MYS: { fillKey: "authorHasTraveledTo" },
-	// MEX: { fillKey: "authorHasTraveledTo" },
-	// NLD: { fillKey: "authorHasTraveledTo" },
-	// NZL: { fillKey: "authorHasTraveledTo" },
-	// NGA: { fillKey: "authorHasTraveledTo" },
-	// NOR: { fillKey: "authorHasTraveledTo" },
-	// PHL: { fillKey: "authorHasTraveledTo" },
 	RUS: { fillKey: "authorHasTraveledTo" },
 	SGP: { fillKey: "authorHasTraveledTo" },
 	ESP: { fillKey: "authorHasTraveledTo" },
@@ -44,7 +105,59 @@ var basic_choropleth = new Datamap({
 	GBR: { fillKey: "authorHasTraveledTo" },
 	USA: { fillKey: "authorHasTraveledTo" },
 	VEN: { fillKey: "authorHasTraveledTo" }
+  },
+  done: function(datamap) {
+  	// $("#iBtnUnselected").on('')
+    datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography){
+    	// var c3 = geography.id;
+     //    var fillkey_obj = datamap.options.data[c3] || {fillKey: 'defaultFill'};
+     //    var fillkey = fillkey_obj.fillKey;;
+     //    var fillkeys = Object.keys(fills);
+     //    var antikey = fillkeys[Math.abs(fillkeys.indexOf(fillkey) - 1)];
+     //    var new_fills = {
+     //      [geography.id] : {
+     //        fillKey: antikey
+     //      }
+     //    };
+     //    datamap.updateChoropleth(new_fills);
+
+    	var c3 = geography.id;
+		if(countrySelected.indexOf(c3) === -1){
+			countrySelected.push(c3);
+		} 
+		else {
+			countrySelected.splice(countrySelected.indexOf(c3), 1);
+		}
+		var temp = {}
+		Object.keys(countries).forEach(function(c){
+			if(countrySelected.indexOf(c) != -1){
+				temp[c] = {"fillKey": "authorHasClicked"}
+			} else {
+				temp[c] = {"fillKey": "authorHasTraveledTo"}
+			}
+		})
+		datamap.updateChoropleth(temp)
+		updateRadar();
+    });
   }
+});
+
+
+d3.select("#iSelect").on("change", function(){
+	var temp = {}
+	countrySelected.length = 0;
+	if(this.checked){
+		Object.keys(countries).forEach(function(c){  
+			temp[c] = { "fillKey": "authorHasClicked" };
+			countrySelected.push(c)
+		})
+	} else {
+		Object.keys(countries).forEach(function(c){  
+			temp[c] = { "fillKey": "authorHasTraveledTo" };
+		})
+	}
+	
+	basic_choropleth.updateChoropleth(temp)
 });
 
 var colors = d3.scale.category10();
@@ -138,7 +251,7 @@ d3.csv("https://yipeitu.github.io/IVIS18_Project2/countryAvg.csv", function(erro
   data.forEach(function(d) {
     d.sum = +d.sum;
   });
-
+  dataAvg = data;
   x.domain(data.map(function(d) { return d.c2; }));
   y.domain([0, d3.max(data, function(d) { return d.sum; })]);
 
@@ -169,10 +282,10 @@ d3.csv("https://yipeitu.github.io/IVIS18_Project2/countryAvg.csv", function(erro
       .on("mouseover", tip.show)
       .on("mouseout", tip.hide);
 
-  d3.select("input").on("change", change);
+  d3.select("#iSort").on("change", change);
 
   var sortTimeout = setTimeout(function() {
-    d3.select("input").property("checked", true).each(change);
+    d3.select("#iSort").property("checked", true).each(change);
   }, 2000);
 
   function change() {
@@ -489,25 +602,6 @@ var createRadar = function(d, country, continent){
 		  .text(function(d) { return d; })
 		  ;	
 }
-
-var dataRadar = null;
-d3.json("https://yipeitu.github.io/IVIS18_Project2/wave.json", function(data) {
-  // create html
-  // Object.keys(data).forEach(function(continent) {
-  // 	Object.keys(data[continent]).forEach(function(country){
-  // 		console.log(continent, country, data[continent][country])
-  // 		countryId = country.replace("(", "").replace(")", "").replace(" ", "")
-  // 		$("#i"+continent).append(`<div id=${countryId}></div>`)
-  // 		createRadar(data[continent][country], countryId, continent)
-
-  // 		// createRadar(data[continent][country], country, continent)
-  // 	})
-  // })
-  dataRadar = data
-  console.log(data["ASIA"]["TAIWAN"])
-  $("#iASIA").append(`<div id=TAIWAN></div>`)
-  createRadar(data["ASIA"]["TAIWAN"], "TAIWAN", "ASIA")
-});
 
 
 
