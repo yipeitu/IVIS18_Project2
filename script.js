@@ -460,48 +460,51 @@ var createRadar = function(d, country, continent){
 		.text("The wave number");
 			
 	//Initiate Legend	
-	// var legend = svgRadar.append("g")
-	// 	.attr("class", "legend")
-	// 	.attr("height", 100)
-	// 	.attr("width", 200)
-	// 	.attr('transform', 'translate(90,20)') 
-	// 	;
-	// 	//Create colour squares
-	// 	legend.selectAll('rect')
-	// 	  .data(LegendOptions)
-	// 	  .enter()
-	// 	  .append("rect")
-	// 	  .attr("x", w - 65)
-	// 	  .attr("y", function(d, i){ return i * 20;})
-	// 	  .attr("width", 10)
-	// 	  .attr("height", 10)
-	// 	  .style("fill", function(d, i){ return colorscale(i);})
-	// 	  ;
-	// 	//Create text next to squares
-	// 	legend.selectAll('text')
-	// 	  .data(LegendOptions)
-	// 	  .enter()
-	// 	  .append("text")
-	// 	  .attr("x", w - 52)
-	// 	  .attr("y", function(d, i){ return i * 20 + 9;})
-	// 	  .attr("font-size", "11px")
-	// 	  .attr("fill", "#737373")
-	// 	  .text(function(d) { return d; })
-	// 	  ;	
+	var legend = svgRadar.append("g")
+		.attr("class", "legend")
+		.attr("height", 100)
+		.attr("width", 200)
+		.attr('transform', 'translate(90,20)') 
+		;
+		//Create colour squares
+		legend.selectAll('rect')
+		  .data(LegendOptions)
+		  .enter()
+		  .append("rect")
+		  .attr("x", w - 65)
+		  .attr("y", function(d, i){ return i * 20;})
+		  .attr("width", 10)
+		  .attr("height", 10)
+		  .style("fill", function(d, i){ return colorscale(i);})
+		  ;
+		//Create text next to squares
+		legend.selectAll('text')
+		  .data(LegendOptions)
+		  .enter()
+		  .append("text")
+		  .attr("x", w - 52)
+		  .attr("y", function(d, i){ return i * 20 + 9;})
+		  .attr("font-size", "11px")
+		  .attr("fill", "#737373")
+		  .text(function(d) { return d; })
+		  ;	
 }
 
 d3.json("https://yipeitu.github.io/IVIS18_Project2/wave.json", function(data) {
   // create html
-  Object.keys(data).forEach(function(continent) {
-  	Object.keys(data[continent]).forEach(function(country){
-  		console.log(continent, country, data[continent][country])
-  		countryId = country.replace(" ", "")
-  		$("#i"+continent).append(`<div id=${countryId}></div>`)
-  		createRadar(data[continent][country], countryId, continent)
-  		// createRadar(data[continent][country], country, continent)
-  	})
-  })
-  
+  // Object.keys(data).forEach(function(continent) {
+  // 	Object.keys(data[continent]).forEach(function(country){
+  // 		console.log(continent, country, data[continent][country])
+  // 		countryId = country.replace("(", "").replace(")", "").replace(" ", "")
+  // 		$("#i"+continent).append(`<div id=${countryId}></div>`)
+  // 		createRadar(data[continent][country], countryId, continent)
+
+  // 		// createRadar(data[continent][country], country, continent)
+  // 	})
+  // })
+  console.log(data["ASIA"]["TAIWAN"])
+  $("#iASIA").append(`<div id=TAIWAN></div>`)
+  createRadar(data["ASIA"]["TAIWAN"], "TAIWAN", "ASIA")
 });
 
 
