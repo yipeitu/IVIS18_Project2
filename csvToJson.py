@@ -26,10 +26,10 @@ with open("wave.csv", "r") as csvfile:
 			countries[c3] = [line[cols.index("c2")], name, line[cols.index("continent")], line[cols.index("sum")]]
 		if data.get(continent) is None:
 			data[continent] = {}
-		if data[continent].get(name) is None:
-			data[continent][name] = [[] for i in range(wave_num)]
+		if data[continent].get(c3) is None:
+			data[continent][c3] = [[] for i in range(wave_num)]
 		for var in fields.keys():
-			data[continent][name][int(wave)-1].append({
+			data[continent][c3][int(wave)-1].append({
 				"axis": fields[var],
 				"value": float(line[cols.index(var)])
 				})
