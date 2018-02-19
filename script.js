@@ -490,6 +490,7 @@ var createRadar = function(d, country, continent){
 		  ;	
 }
 
+var dataRadar = null;
 d3.json("https://yipeitu.github.io/IVIS18_Project2/wave.json", function(data) {
   // create html
   // Object.keys(data).forEach(function(continent) {
@@ -502,6 +503,7 @@ d3.json("https://yipeitu.github.io/IVIS18_Project2/wave.json", function(data) {
   // 		// createRadar(data[continent][country], country, continent)
   // 	})
   // })
+  dataRadar = data
   console.log(data["ASIA"]["TAIWAN"])
   $("#iASIA").append(`<div id=TAIWAN></div>`)
   createRadar(data["ASIA"]["TAIWAN"], "TAIWAN", "ASIA")
