@@ -16,8 +16,24 @@
 		<div class="h1">
 			World Values Survey - Justifiable
 		</div>
+		<div class="text-left px-5 py-2 bg-dark text-light">
+			<div class="h2 text-center text-warning">Learning</div>
+			<div class="mx-5 my-2 pl-5 py-2">1. Download WVS_Longitudinal_1981_2014_R_v2015_04_18.rdata from World Values Survey</div>
+			<div class="mx-5 my-2 pl-5 py-2">2. Use R to clean and extract data, and matched the country code. </div>
+			<div class="mx-5 my-2 pl-5 py-2">3. Output R data into CSV files</div>
+			<div class="mx-5 my-2 pl-5 py-2">4. Use Python to convert CSV to JSON</div>
+			<div class="mx-5 my-2 pl-5 py-2">5. Use data.map of d3 library to draw the world map, you can select country by clicking on the map.</div>
+			<div class="mx-5 my-2 pl-5 py-2">6. The red means the selected countries, the green means the unselected countries, the gray one means not belong to 30 countries.</div>
+			<div class="mx-5 my-2 pl-5 py-2">7. Replacing the missing value as 6, which is the middle value, according to the questionnaire.</div>
+			<div class="mx-5 my-2 pl-5 py-2">8. Calculating the average value in each variable, and sum the average value to represent the justifiable value ( before sorting)</div>
+			<div class="mx-5 my-2 pl-5 py-2">9. After sorting, you can see the Asian countries, in average, have the lower justifiable value.</div>
+			<div class="mx-5 my-2 pl-5 py-2">10. Using the radar graph to represent each variable </div>
+			<div class="mx-5 my-2 pl-5 py-2">11. Some countries are not included in all waves, thus, I set those missing wave values are 0.</div>
+			<div class="mx-5 my-2 pl-5 py-2">12. You can choose waves to show and compare the countries in radar graph.</div>
+
+		</div>
 		<div class="p-2">
-			30 countries are all selected with green, <span class="font-weight-bold">CLICK the country/countries</span> to show the data below.
+			30 countries are all selected in green, <span class="font-weight-bold">CLICK the country/countries</span> to show the data below.
 		</div>
 		<div class="bg-dark text-warning p-2">
 			<label><input type="checkbox" id="iSelect"> select all <span class="font-weight-bold text-danger">(takes some time to draw all grpahes)</span></label>
