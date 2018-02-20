@@ -29,7 +29,19 @@ var countries = {
 	'RUS': ['RU', 'RUSSIA', 'EUROPE', '23.12'], 
 	'MEX': ['MX', 'MEXICO', 'AMERICA', '25.99'], 
 	'BRA': ['BR', 'BRAZIL', 'AMERICA', '22.69']}
+var emptyWave = [
+	{"value": 0, "axis": "homosexuality"},
+	{"value": 0, "axis": "prostitution"},
+	{"value": 0, "axis": "suicide"},
+	{"value": 0, "axis": "euthanasia"},
+	{"value": 0, "axis": "divorce"},
+	{"value": 0, "axis": "avoiding a fare on public transport"},
+	{"value": 0, "axis": "tax cheating"},
+	{"value": 0, "axis": "bribe accept"},
+	{"value": 0, "axis": "abortion"}]
+var countryDefault = ["JPN", "TWN", "RUS", "CAN", "ESP", "MEX", "BRA", "HKG", "SWE"];
 var countrySelected = []
+var waveUnselected = [0, 2, 3]
 var dataAvg = null;
 var dataRadar = null;
 d3.json("https://yipeitu.github.io/IVIS18_Project2/wave.json", function(data) {
@@ -37,10 +49,10 @@ d3.json("https://yipeitu.github.io/IVIS18_Project2/wave.json", function(data) {
   Object.keys(data).forEach(function(continent) {
   	Object.keys(data[continent]).forEach(function(country){
   		$("#i"+continent).append(`<div id=${country}></div>`)
-  		if(["CAN", "TWN", "SWE"].indexOf(country) != -1){
+  		if(countryDefault.indexOf(country) != -1){
   			countrySelected.push(country);
   			$("#"+country).addClass('bound');
-  			console.log(continent, country, data[continent][country])
+  			
   			createRadar(data[continent][country], country, continent)
   		}
   	})
@@ -48,15 +60,13 @@ d3.json("https://yipeitu.github.io/IVIS18_Project2/wave.json", function(data) {
   dataRadar = data;
 });
 
-var updateRadar = function(){
-	console.log(countrySelected);
+
+var updateRadar = function(redraw=false){
+	
 	Object.keys(countries).forEach(function(country){
-		// if(Object.keys(countries).indexOf(country) === -1)
-		// 	return;
-		console.log(country)
 		var continent = countries[country][2]
 		if(countrySelected.indexOf(country) != -1){
-			if($("body").find('#'+country+":not(.bound)").length != 0){
+			if($("body").find('#'+country+":not(.bound)").length != 0 || redraw){
 				console.log(country, "draw")
 				$("#"+country).addClass('bound');
 				createRadar(dataRadar[continent][country], country, continent);
@@ -91,35 +101,36 @@ var basic_choropleth = new Datamap({
         }
   },
   data: {
-    AUS: { fillKey: "authorHasTraveledTo" },
-	BGD: { fillKey: "authorHasTraveledTo" },
-	BRA: { fillKey: "authorHasTraveledTo" },
+    BGD: { fillKey: "authorHasTraveledTo" },
+	USA: { fillKey: "authorHasTraveledTo" },
+	ISR: { fillKey: "authorHasTraveledTo" },
+	SWE: { fillKey: "authorHasClicked" },
+	DEU: { fillKey: "authorHasTraveledTo" },
+	IDN: { fillKey: "authorHasTraveledTo" },
+	GBR: { fillKey: "authorHasTraveledTo" },
 	CAN: { fillKey: "authorHasClicked" },
-	CHN: { fillKey: "authorHasTraveledTo" },
-	TWN: { fillKey: "authorHasClicked" },
+	KOR: { fillKey: "authorHasTraveledTo" },
 	COL: { fillKey: "authorHasTraveledTo" },
 	CYP: { fillKey: "authorHasTraveledTo" },
-	FIN: { fillKey: "authorHasTraveledTo" },
-	FRA: { fillKey: "authorHasTraveledTo" },
-	DEU: { fillKey: "authorHasTraveledTo" },
-	HKG: { fillKey: "authorHasTraveledTo" },
-	IND: { fillKey: "authorHasTraveledTo" },
-	IDN: { fillKey: "authorHasTraveledTo" },
-	IRN: { fillKey: "authorHasTraveledTo" },
-	ISR: { fillKey: "authorHasTraveledTo" },
-	ITA: { fillKey: "authorHasTraveledTo" },
-	JPN: { fillKey: "authorHasTraveledTo" },
-	KOR: { fillKey: "authorHasTraveledTo" },
-	LBN: { fillKey: "authorHasTraveledTo" },
-	RUS: { fillKey: "authorHasTraveledTo" },
 	SGP: { fillKey: "authorHasTraveledTo" },
-	ESP: { fillKey: "authorHasTraveledTo" },
-	SWE: { fillKey: "authorHasClicked" },
+	HKG: { fillKey: "authorHasClicked" },
+	LBN: { fillKey: "authorHasTraveledTo" },
+	FRA: { fillKey: "authorHasTraveledTo" },
 	CHE: { fillKey: "authorHasTraveledTo" },
+	ESP: { fillKey: "authorHasClicked" },
+	TWN: { fillKey: "authorHasClicked" },
+	CHN: { fillKey: "authorHasTraveledTo" },
+	AUS: { fillKey: "authorHasTraveledTo" },
+	IRN: { fillKey: "authorHasTraveledTo" },
+	VEN: { fillKey: "authorHasTraveledTo" },
+	FIN: { fillKey: "authorHasTraveledTo" },
 	THA: { fillKey: "authorHasTraveledTo" },
-	GBR: { fillKey: "authorHasTraveledTo" },
-	USA: { fillKey: "authorHasTraveledTo" },
-	VEN: { fillKey: "authorHasTraveledTo" }
+	JPN: { fillKey: "authorHasClicked" },
+	ITA: { fillKey: "authorHasTraveledTo" },
+	IND: { fillKey: "authorHasTraveledTo" },
+	RUS: { fillKey: "authorHasClicked" },
+	MEX: { fillKey: "authorHasClicked" },
+	BRA: { fillKey: "authorHasClicked" }
   },
   done: function(datamap) {
     datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography){
@@ -152,30 +163,17 @@ d3.select("#iSelect").on("change", function(){
 		Object.keys(countries).forEach(function(c){  
 			temp[c] = { "fillKey": "authorHasClicked" };
 			countrySelected.push(c);
-			// updateRadar();
 		})
 	} else {
 		Object.keys(countries).forEach(function(c){  
 			temp[c] = { "fillKey": "authorHasTraveledTo" };
 		})
 	}
-	
-	basic_choropleth.updateChoropleth(temp)
+	basic_choropleth.updateChoropleth(temp);
+	updateRadar();
 });
 
 var colors = d3.scale.category10();
-
-// window.setInterval(function() {
-//   basic_choropleth.updateChoropleth({
-//     USA: "#FF5733",
-//     RUS: { fillKey: 'authorHasTraveledTo' },
-//     AUS: { fillKey: 'authorHasTraveledTo' },
-//     BRA: { fillKey: 'authorHasTraveledTo' },
-//     CAN: { fillKey: 'authorHasTraveledTo' },
-//     ZAF: { fillKey: 'authorHasTraveledTo' },
-//     IND: colors(Math.random() * 50),
-//   });
-// }, 2000);
 
 
 var tableContent = function(i, variable){
@@ -351,13 +349,17 @@ var RadarChart = {
 	var total = allAxis.length;
 	var radius = cfg.factor*Math.min(cfg.w/2, cfg.h/2);
 	var Format = d3.format('%');
-	d3.select(id).select("svg").remove();
-	console.log(id)
-	d3.select(id)
-		.append("div")
-		.attr("class", "bg-dark text-light py-1")
-		.text(countries[id.replace("#", "")][1])
 
+	d3.select(id).select("svg").remove();
+	
+	if($(id+"bound").length === 0){
+		var idName = id.replace("#", "")
+		d3.select(id)
+		.append("div")
+		.attr("id", idName+"bound")
+		.attr("class", "bg-dark text-light py-1")
+		.text(countries[idName][1])
+	}
 	var g = d3.select(id)
 			.append("svg")
 			.attr("width", cfg.w+cfg.ExtraWidthX)
@@ -430,7 +432,6 @@ var RadarChart = {
 		.attr("transform", function(d, i){return "translate(0, -10)"})
 		.attr("x", function(d, i){return cfg.w/2*(1-cfg.factorLegend*Math.sin(i*cfg.radians/total))-60*Math.sin(i*cfg.radians/total);})
 		.attr("y", function(d, i){return cfg.h/2*(1-Math.cos(i*cfg.radians/total))-20*Math.cos(i*cfg.radians/total);});
-
  
 	d.forEach(function(y, x){
 	  dataValues = [];
@@ -537,6 +538,11 @@ var RadarChart = {
 };
 
 var createRadar = function(d, country, continent){
+	var newD = Object.assign([], d);
+	waveUnselected.forEach(function(index){
+		newD[index] = emptyWave
+	})
+	console.log(country, d, newD)
 	var w = 250,
 	h = 250;
 
@@ -558,7 +564,7 @@ var createRadar = function(d, country, continent){
 
 	//Call function to draw the Radar chart
 	//Will expect that data is in %'s
-	RadarChart.draw("#"+country, d, mycfg);
+	RadarChart.draw("#"+country, newD, mycfg);
 
 	////////////////////////////////////////////
 	/////////// Initiate legend ////////////////
@@ -612,220 +618,21 @@ var createRadar = function(d, country, continent){
 	// 	  ;	
 }
 
+var waveChange = function(event){
+	var waveNum = parseInt(event.target.id.replace("iWave", "")) - 1;
+	if(event.target.checked){
+		waveUnselected.splice(waveUnselected.indexOf(waveNum), 1)
+	} else {
+		waveUnselected.push(waveNum)
+	}
+	updateRadar(true);
+}
+
+$("#iWave1").on("change", waveChange.bind(this));
+$("#iWave2").on("change", waveChange.bind(this));
+$("#iWave3").on("change", waveChange.bind(this));
+$("#iWave4").on("change", waveChange.bind(this));
+$("#iWave5").on("change", waveChange.bind(this));
+$("#iWave6").on("change", waveChange.bind(this));
 
 
-
-
-
-// ===========
-// var margin = {top: 20, right: 20, bottom: 30, left: 40},
-//     width = 960 - margin.left - margin.right,
-//     height = 500 - margin.top - margin.bottom;
-
-// // var formatPercent = d3.format(".0%");
-
-// var x = d3.scale.ordinal()
-//     .rangeRoundBands([0, width], .1, 1);
-
-// var y = d3.scale.linear()
-//     .range([height, 0]);
-
-// var xAxis = d3.svg.axis()
-//     .scale(x)
-//     .orient("bottom");
-
-// var yAxis = d3.svg.axis()
-//     .scale(y)
-//     .orient("left")
-//     // .tickFormat(formatPercent);
-
-// var svg = d3.select("#iBar").append("svg")
-//     .attr("width", width + margin.left + margin.right)
-//     .attr("height", height + margin.top + margin.bottom)
-//   .append("g")
-//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-// d3.csv("https://yipeitu.github.io/IVIS18_Project2/countryAvg.csv", function(error, data) {
-
-//   data.forEach(function(d) {
-//     d.sum = +d.sum;
-//   });
-
-//   x.domain(data.map(function(d) { return d.c2; }));
-//   y.domain([0, d3.max(data, function(d) { return d.sum; })]);
-
-//   svg.append("g")
-//       .attr("class", "x axis")
-//       .attr("transform", "translate(0," + height + ")")
-//       .call(xAxis);
-
-//   svg.append("g")
-//       .attr("class", "y axis")
-//       .call(yAxis)
-//     .append("text")
-//       .attr("transform", "rotate(-90)")
-//       .attr("y", 6)
-//       .attr("dy", ".71em")
-//       .style("text-anchor", "end")
-//       .text("Justifiable");
-
-//   svg.selectAll(".bar")
-//       .data(data)
-//     .enter().append("rect")
-//       .attr("class", "bar")
-//       .attr("x", function(d) { return x(d.c2); })
-//       .attr("width", x.rangeBand())
-//       .attr("y", function(d) { return y(d.sum); })
-//       .attr("height", function(d) { return height - y(d.sum); });
-
-//   d3.select("input").on("change", change);
-
-//   var sortTimeout = setTimeout(function() {
-//     d3.select("input").property("checked", true).each(change);
-//   }, 2000);
-
-//   function change() {
-//     clearTimeout(sortTimeout);
-
-//     // Copy-on-write since tweens are evaluated after a delay.
-//     var x0 = x.domain(data.sort(this.checked
-//         ? function(a, b) { return b.sum - a.sum; }
-//         : function(a, b) { return d3.ascending(a.c2, b.c2); })
-//         .map(function(d) { return d.c2; }))
-//         .copy();
-
-//     svg.selectAll(".bar")
-//         .sort(function(a, b) { return x0(a.c2) - x0(b.c2); });
-
-//     var transition = svg.transition().duration(750),
-//         delay = function(d, i) { return i * 50; };
-
-//     transition.selectAll(".bar")
-//         .delay(delay)
-//         .attr("x", function(d) { return x0(d.c2); });
-
-//     transition.select(".x.axis")
-//         .call(xAxis)
-//       .selectAll("g")
-//         .delay(delay);
-//   }
-// });
-//------------
-// var width = 1300, height = 670;
-
-// var dataset = [
-//     [
-//         { x: 0, y: 5 },{ x: 1, y: 4 },{ x: 2, y: 2 },{ x: 3, y: 2 },
-//         { x: 4, y: 3 },{ x: 5, y: 1 },{ x: 6, y: 2 },{ x: 7, y: 2 }
-//     ],[
-//         { x: 0, y: 2 },{ x: 1, y: 5 },{ x: 2, y: 3 },{ x: 3, y: 3 },
-//         { x: 4, y: 1 },{ x: 5, y: 5 },{ x: 6, y: 3 },{ x: 7, y: 2 }
-//     ],[
-//         { x: 0, y: 5 },{ x: 1, y: 8 },{ x: 2, y: 1 },{ x: 3, y: 4 },
-//         { x: 4, y: 3 },{ x: 5, y: 7 },{ x: 6, y: 2 },{ x: 7, y: 6 }
-//     ],[
-//         { x: 0, y: 7 },{ x: 1, y: 8 },{ x: 2, y: 9 },{ x: 3, y: 10 },
-//         { x: 4, y: 3 },{ x: 5, y: 7 },{ x: 6, y: 2 },{ x: 7, y: 11 }
-//     ]
-// ];
-
-// var stack = d3.layout.stack()(dataset);
-
-// var xScale = d3.scale.ordinal()
-//         .domain(d3.range(dataset[0].length))
-//         .rangeRoundBands([0, width/2], 0.01);
-
-// var maxHeight = d3.max(dataset, function(d) {
-//     return d3.max(d, function(d) { return d.y0 + d.y; });
-// });
-
-// var yScale = d3.scale.linear()
-//         .domain([0,	maxHeight])
-//         .range([0, height]);
-
-// var colors = d3.scale.category20();
-
-// var svg = d3.select("body")
-//         .append("svg")
-//         .attr("width", width)
-//         .attr("height", height);
-
-// var groups = svg.selectAll("g")
-//         .data(dataset)
-//         .enter()
-//         .append("g")
-//         .style("fill", function(d, i) { return colors(i); });
-
-// var area = d3.svg.area()
-//         .interpolate("cardinal")
-//         .x(function(d,i) { return xScale(i); })
-//         .y0(function(d) { return height-yScale(d.y0 + d.y); })
-//         .y1(function(d) { return height-yScale(d.y0); });
-
-// groups.append("path")
-//         .attr("d", function(d) { return area(d); })
-//         .style("fill", function(d, i) { return colors(i); });
-
-// ----------
-// var margin = {
-//         top: 20,
-//         right: 20,
-//         bottom: 30,
-//         left: 40
-//       };
-// var width = 960 - margin.left - margin.right;
-// var height = 500 - margin.top - margin.bottom;
-
-// var svg = d3.select("#iBar").append("svg")
-//     .attr("width", width + margin.left + margin.right)
-//     .attr("height", height + margin.top + margin.bottom)
-//   .append("g")
-//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-// var x = d3.scale.linear()
-//       .range([0, width]);
-
-// var y = d3.scale.ordinal()
-//     .range([height, 0]);
-
-
-// var yAxis = d3.svg.axis(y);
-
-// d3.csv("https://yipeitu.github.io/IVIS18_Project2/countryAvga.csv", type, function(error, data) {
-//   if (error) throw error;
-
-//   data.sort(function(a, b) {
-//     return a.sum - b.sum;
-//   });
-
-//   x.domain([0, d3.max(data, function(d) { return d.sum; })]);
-//   console.log(data)
-
-//   y.domain(data.map(function(d) { return d.c2; }))
-//     .rangeRoundBands(0.1);
-//   console.log(y)
-
-//   svg.append("g")
-//       .attr("class", "x axis")
-//   .attr("transform", "translate(0," + height + ")")
-//   .call(d3.svg.axis(x));
-
-//   svg.append("g")
-//       .attr("class", "y axis")
-//       .call(yAxis);
-
-//   svg.selectAll(".bar")
-//       .data(data)
-//     .enter().append("rect")
-//       .attr("class", "bar")
-//       .attr("x", 0)
-//       .attr("height", y.rangeBand())
-//       .attr("y", function(d) { return y(d.c2); })
-//       .attr("width", function(d) { return x(d.sum); });
-
-// });
-
-// function type(d) {
-//   d.sum = +d.sum;
-//   return d;
-// }
